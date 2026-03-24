@@ -1,5 +1,31 @@
 mobil. prog. jegyzetek 
 
+private void calculateTotal() {
+    // 1. Éjszakák számának kiszámítása
+    long diffInMs = departureDate.getTimeInMillis() - arrivalDate.getTimeInMillis();
+    long nights = TimeUnit.MILLISECONDS.toDays(diffInMs);
+    
+    // Biztonsági ellenőrzés: ha ugyanaz a nap, legyen 0, de a matek miatt 
+    // a feladat valószínűleg legalább 1 éjszakával számol a példában (5 éj).
+    if (nights < 0) nights = 0; 
+
+    // 2. Alapadatok lekérése a UI-ról
+    int extraReggeli = swBreakfast.isChecked() ? 2000 : 0;
+    int szemelyekSzama = sbPeopleCount.getProgress();
+
+    // 3. A PONTOS KÉPLET a feladatlap alapján:
+    // Vegösszeg = (Szobaár + (ReggeliÁr * Személyek)) * Éjszakák
+    long vegosszeg = (basePrice + (extraReggeli * szemelyekSzama)) * nights;
+
+    // 4. Megjelenítés formázva (pl. 315.000 Ft)
+    if (nights > 0) {
+        tvTotalPrice.setText("Végösszeg:\n" + String.format("%,d", vegosszeg) + " Ft");
+    } else {
+        tvTotalPrice.setText("Végösszeg:\n0 Ft (Válasszon érvényes dátumot)");
+    }
+}
+
+
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

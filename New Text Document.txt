@@ -458,7 +458,7 @@ btnOk.setOnClickListener(v -> {
     if (nev.isEmpty() || hex.isEmpty()) {
         Toast.makeText(this, "Minden mezőt tölts ki!", Toast.LENGTH_SHORT).show();
         return; // Megállítja a futást, nem adja hozzá
-    }
+    
 
     if (!hex.startsWith("#") || hex.length() != 7) {
         Toast.makeText(this, "Hibás hex formátum! (#RRGGBB)", Toast.LENGTH_SHORT).show();
@@ -467,3 +467,214 @@ btnOk.setOnClickListener(v -> {
 
     // Ha minden oké, csak akkor megy tovább...
 });
+
+
+
+
+
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/xml/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F1E6D9"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HOTEL HISTORIA MALOMKERT"
+        android:textColor="#C18939"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/marcellus_sc" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Melyik szobát választja?"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp" />
+
+    <ImageView
+        android:id="@+id/ivRoom"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/kep1"
+        android:layout_marginVertical="15dp" />
+
+    <RadioGroup
+        android:id="@+id/rgRooms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RadioButton android:id="@+id/rb1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Standard szoba - 46.000 Ft/éj, max. 2 fő" android:checked="true" />
+        <RadioButton android:id="@+id/rb2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Superior szoba - 49.000 Ft/éj, max. 2 fő" />
+        <RadioButton android:id="@+id/rb3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Családi szoba - 59.000 Ft/éj, max. 4 fő" />
+        <RadioButton android:id="@+id/rb4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Deluxe szoba - 54.000 Ft/éj, max. 3 fő" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnInfo"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="További információk"
+        android:backgroundTint="#3C6A79"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/btnSelect"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Kiválaszt"
+        android:backgroundTint="#C18939"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
+</LinearLayout>
+
+
+// MainActivity.java
+public class MainActivity extends AppCompatActivity {
+    RadioGroup rg;
+    ImageView iv;
+    String selectedRoom = "Standard szoba";
+    int price = 46000, maxP = 2;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        rg = findViewById(R.id.rgRooms);
+        iv = findViewById(R.id.ivRoom);
+
+        rg.setOnCheckedChangeListener((group, id) -> {
+            if (id == R.id.rb1) { iv.setImageResource(R.drawable.kep1); selectedRoom="Standard"; price=46000; maxP=2; }
+            else if (id == R.id.rb2) { iv.setImageResource(R.drawable.kep2); selectedRoom="Superior"; price=49000; maxP=2; }
+            else if (id == R.id.rb3) { iv.setImageResource(R.drawable.kep3); selectedRoom="Családi"; price=59000; maxP=4; }
+            else if (id == R.id.rb4) { iv.setImageResource(R.drawable.kep4); selectedRoom="Deluxe"; price=54000; maxP=3; }
+        });
+
+        findViewById(R.id.btnInfo).setOnClickListener(v -> 
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://hotelmalomkert.hu/"))));
+
+        findViewById(R.id.btnSelect).setOnClickListener(v -> {
+            Intent i = new Intent(this, SecondActivity.class);
+            i.putExtra("name", selectedRoom);
+            i.putExtra("price", price);
+            i.putExtra("max", maxP);
+            startActivity(i);
+        });
+    }
+}
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F1E6D9"
+    android:padding="16dp">
+
+    <TextView android:id="@+id/tvRoomInfo" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:textColor="#3C6A79" android:textSize="20sp" android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText android:id="@+id/etName" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:hint="Foglaló neve" android:background="#FFFFFF" android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tvRoomInfo" android:layout_marginTop="20dp" />
+
+    <SeekBar android:id="@+id/sbPeople" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:min="1" android:max="4" android:progress="1"
+        app:layout_constraintTop_toBottomOf="@id/etName" android:layout_marginTop="30dp" />
+
+    <TextView android:id="@+id/tvPeopleCount" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Személyek száma: 1 fő" app:layout_constraintTop_toBottomOf="@id/sbPeople" />
+
+    <Switch android:id="@+id/swBreakfast" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Reggeli (2.000 Ft/fő/éj): " app:layout_constraintTop_toBottomOf="@id/tvPeopleCount" />
+
+    <Button android:id="@+id/btnArrival" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Érkezés" android:backgroundTint="#3C6A79" app:layout_constraintTop_toBottomOf="@id/swBreakfast" />
+
+    <Button android:id="@+id/btnDeparture" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Távozás" android:backgroundTint="#3C6A79" app:layout_constraintTop_toTopOf="@id/btnArrival" app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView android:id="@+id/tvTotal" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Végösszeg: 0 Ft" android:textSize="20sp" android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/btnBook" app:layout_centerX_toCenterX="parent" />
+
+    <Button android:id="@+id/btnBook" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Szoba foglalása" android:backgroundTint="#C18939" app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+// SecondActivity.java
+public class SecondActivity extends AppCompatActivity {
+    Calendar arrDate = Calendar.getInstance(), depDate = Calendar.getInstance();
+    int roomPrice, maxCapacity;
+    TextView tvTotal, tvInfo, tvPCount;
+    SeekBar sb; Switch sw; EditText et;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_second);
+
+        roomPrice = getIntent().getIntExtra("price", 0);
+        maxCapacity = getIntent().getIntExtra("max", 0);
+        
+        tvInfo = findViewById(R.id.tvRoomInfo);
+        tvTotal = findViewById(R.id.tvTotal);
+        tvPCount = findViewById(R.id.tvPeopleCount);
+        sb = findViewById(R.id.sbPeople);
+        sw = findViewById(R.id.swBreakfast);
+        et = findViewById(R.id.etName);
+
+        tvInfo.setText(getIntent().getStringExtra("name") + " - " + roomPrice + " Ft/éj");
+
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override public void onProgressChanged(SeekBar s, int p, boolean b) { 
+                tvPCount.setText("Személyek száma: " + p + " fő"); updatePrice(); 
+            }
+            @Override public void onStartTrackingTouch(SeekBar s) {} @Override public void onStopTrackingTouch(SeekBar s) {}
+        });
+
+        sw.setOnCheckedChangeListener((b, isChecked) -> updatePrice());
+
+        findViewById(R.id.btnArrival).setOnClickListener(v -> showDatePicker(true));
+        findViewById(R.id.btnDeparture).setOnClickListener(v -> showDatePicker(false));
+
+        findViewById(R.id.btnBook).setOnClickListener(v -> {
+            if(et.getText().toString().isEmpty()) Toast.makeText(this, "Név kötelező!", Toast.LENGTH_SHORT).show();
+            else if(sb.getProgress() > maxCapacity) Toast.makeText(this, "Túl sok vendég!", Toast.LENGTH_LONG).show();
+            else { Toast.makeText(this, "Sikeres foglalás!", Toast.LENGTH_SHORT).show(); finish(); }
+        });
+    }
+
+    private void showDatePicker(boolean arrival) {
+        DatePickerDialog dpd = new DatePickerDialog(this, (view, y, m, d) -> {
+            if(arrival) arrDate.set(y, m, d); else depDate.set(y, m, d);
+            updatePrice();
+        }, 2026, 3, 2); // Példa dátum a kép alapján
+        dpd.getDatePicker().setMinDate(System.currentTimeMillis());
+        dpd.show();
+    }
+
+    private void updatePrice() {
+        long diff = depDate.getTimeInMillis() - arrDate.getTimeInMillis();
+        long nights = Math.max(0, diff / (24 * 60 * 60 * 1000));
+        int breakfast = sw.isChecked() ? 2000 : 0;
+        long total = (roomPrice + (breakfast * sb.getProgress())) * nights;
+        tvTotal.setText("Végösszeg: " + total + " Ft");
+    }
+}
+

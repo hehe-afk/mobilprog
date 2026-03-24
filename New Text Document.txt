@@ -1,5 +1,265 @@
 mobil. prog. jegyzetek 
 
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F1E6D9"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/marcellus_sc"
+        android:text="HOTEL HISTORIA MALOMKERT"
+        android:textColor="#C18939"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvRoomDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Szoba adatai..."
+        android:textColor="#3C6A79"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+    <EditText
+        android:id="@+id/etGuestName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:hint="Foglaló neve"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRoomDetails" />
+
+    <TextView
+        android:id="@+id/tvPeopleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Személyek száma: 1 fő"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etGuestName" />
+
+    <SeekBar
+        android:id="@+id/sbPeopleCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:max="4"
+        android:min="1"
+        android:progress="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPeopleLabel" />
+
+    <Switch
+        android:id="@+id/swBreakfast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Reggeli (2.000 Ft/fő/éj): "
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sbPeopleCount" />
+
+    <Button
+        android:id="@+id/btnArrival"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="#3C6A79"
+        android:text="Érkezés\nkiválasztása"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/btnDeparture"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/swBreakfast" />
+
+    <Button
+        android:id="@+id/btnDeparture"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#3C6A79"
+        android:text="Távozás\nkiválasztása"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnArrival"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnArrival"
+        app:layout_constraintTop_toTopOf="@+id/btnArrival" />
+
+    <TextView
+        android:id="@+id/tvTotalPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Végösszeg:\n0 Ft"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#C18939"
+        android:padding="12dp"
+        android:text="Szoba foglalása"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+package com.example.hotelapp; // Ügyelj a saját package nevedre!
+
+import android.app.DatePickerDialog;
+import android.os.Bundle;
+import android.widget.*;
+import androidx.appcompat.app.AppCompatActivity;
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
+
+public class SecondActivity extends AppCompatActivity {
+
+    private TextView tvRoomDetails, tvPeopleLabel, tvTotalPrice;
+    private EditText etGuestName;
+    private SeekBar sbPeopleCount;
+    private Switch swBreakfast;
+    private Calendar arrivalDate, departureDate;
+    private int basePrice, maxCap;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_second);
+
+        // View-k inicializálása
+        tvRoomDetails = findViewById(R.id.tvRoomDetails);
+        tvPeopleLabel = findViewById(R.id.tvPeopleLabel);
+        tvTotalPrice = findViewById(R.id.tvTotalPrice);
+        etGuestName = findViewById(R.id.etGuestName);
+        sbPeopleCount = findViewById(R.id.sbPeopleCount);
+        swBreakfast = findViewById(R.id.swBreakfast);
+
+        // Adatok átvétele az első Activity-től
+        String roomName = getIntent().getStringExtra("name");
+        basePrice = getIntent().getIntExtra("price", 0);
+        maxCap = getIntent().getIntExtra("max", 0);
+
+        tvRoomDetails.setText(roomName + " - " + basePrice + " Ft/éj, max. " + maxCap + " fő");
+
+        // Dátumok alaphelyzetbe állítása (ma és holnap)
+        arrivalDate = Calendar.getInstance();
+        departureDate = Calendar.getInstance();
+        departureDate.add(Calendar.DATE, 1);
+
+        // SeekBar eseménykezelő
+        sbPeopleCount.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvPeopleLabel.setText("Személyek száma: " + progress + " fő");
+                calculateTotal();
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        // Switch eseménykezelő
+        swBreakfast.setOnCheckedChangeListener((buttonView, isChecked) -> calculateTotal());
+
+        // Dátum gombok
+        findViewById(R.id.btnArrival).setOnClickListener(v -> showDatePicker(true));
+        findViewById(R.id.btnDeparture).setOnClickListener(v -> showDatePicker(false));
+
+        // Foglalás gomb + Validáció
+        findViewById(R.id.btnSubmit).setOnClickListener(v -> {
+            String name = etGuestName.getText().toString().trim();
+            int currentPeople = sbPeopleCount.getProgress();
+
+            if (name.isEmpty()) {
+                Toast.makeText(this, "Kérem adja meg a nevét!", Toast.LENGTH_SHORT).show();
+            } else if (currentPeople > maxCap) {
+                Toast.makeText(this, "A szoba max. " + maxCap + " fős! Állítsa be újra.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Sikeres foglalás " + name + " részére!", Toast.LENGTH_SHORT).show();
+                finish(); // Vissza az első oldalra
+            }
+        });
+
+        calculateTotal(); // Kezdeti számítás
+    }
+
+    private void showDatePicker(boolean isArrival) {
+        Calendar target = isArrival ? arrivalDate : departureDate;
+        DatePickerDialog dpd = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
+            target.set(year, month, dayOfMonth);
+            
+            // Logika: Távozás nem lehet érkezés előtt
+            if (!isArrival && departureDate.before(arrivalDate)) {
+                departureDate.setTimeInMillis(arrivalDate.getTimeInMillis());
+                departureDate.add(Calendar.DATE, 1);
+                Toast.makeText(this, "A távozás nem lehet korábbi az érkezésnél!", Toast.LENGTH_SHORT).show();
+            }
+            calculateTotal();
+        }, target.get(Calendar.YEAR), target.get(Calendar.MONTH), target.get(Calendar.DAY_OF_MONTH));
+        
+        dpd.getDatePicker().setMinDate(System.currentTimeMillis());
+        dpd.show();
+    }
+
+    private void calculateTotal() {
+        long diffInMs = departureDate.getTimeInMillis() - arrivalDate.getTimeInMillis();
+        long nights = TimeUnit.MILLISECONDS.toDays(diffInMs);
+        if (nights <= 0) nights = 1; // Minimum 1 éjszaka
+
+        int breakfastPrice = swBreakfast.isChecked() ? 2000 : 0;
+        int people = sbPeopleCount.getProgress();
+
+        // Képlet: (Szobaár + (reggeli * fő)) * éjszakák
+        long total = (long) (basePrice + (breakfastPrice * people)) * nights;
+        
+        tvTotalPrice.setText("Végösszeg:\n" + String.format("%,d", total) + " Ft");
+    }
+}
+
+
+
+
 projekt letrehozas
 new projekt -> empty views activity 
 language: java build configuration: groovy
